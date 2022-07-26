@@ -2,34 +2,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
+# Position of box to render
+T=1 # top y coordinate
+B=-1 # bottom y coordinate
+R=1 # right x coordinate
+L=-2 # left x coordinate
+iterations=100 # how many iterations of the algorithm should be applied to each point
+res=0.001 # determines the resolution of the graph
 
-T=1
-B=-1
-R=1
-L=-2
-iterations=100
-res=0.001
-
-start=time.time()
-x = np.arange(L, R, res)
+start=time.time() # used to measure the amount of time taken
+x = np.arange(L, R, res) # divides up the box
 y=  np.arange(B, T, res)
-xx, yy = np.meshgrid(x, y, sparse=True)
+xx, yy = np.meshgrid(x, y, sparse=True) # sparse, assuming most of the boxes will instantly explode
 print("Calculating",x.size*y.size,"squares","up to",iterations,"times.")
 xx_0=xx
 yy_0=yy
 iter_array=np.zeros((y.size,x.size))
-for i in range(iterations):
+for i in range(iterations): # perform mandelbrot algorithm `iterations` times
     xtemp=(xx*xx-yy*yy +xx_0)
     yy=2*xx*yy +yy_0
     xx=xtemp
     iter_array = iter_array+((xx*xx+yy*yy) <2)
-    
 
-    
-
-    
-    
-p=iter_array*(iter_array<iterations)
+p=iter_array*(iter_array<iterations) # used to remove areas which should look black
 end=time.time()
 
 print("Set calculation completed in",round(end-start,2),"seconds")
